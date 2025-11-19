@@ -62,7 +62,7 @@ jobs:
 
       - name: Build Javadoc
         if: github.ref == 'refs/heads/main'
-        run: mvn javadoc:javadoc
+        run: mvn javadoc:javadoc -X
 
       - name: Deploy documentation to Netlify (--prod)
         if: github.ref == 'refs/heads/main'
