@@ -58,21 +58,12 @@ jobs:
 
       - name: Install Netlify CLI
         if: github.ref == 'refs/heads/main'
-        run: npm install -g netlify-cli
-
-      - name: Return to workspace root
-        if: github.ref == 'refs/heads/main'
-        run: cd $GITHUB_WORKSPACE
+        run: npm install netlify-cli -g
 
       - name: Build Javadoc
         if: github.ref == 'refs/heads/main'
-        run: ./mvnw javadoc:javadoc
+        run: mvn javadoc:javadoc
 
       - name: Deploy documentation to Netlify (--prod)
         if: github.ref == 'refs/heads/main'
-        run: |
-          netlify deploy \
-            --dir=target/site/apidocs \
-            --prod \
-            --auth="${{ secrets.NETLIFY_AUTH_TOKEN }}" \
-            --site="${{ secrets.NETLIFY_SITE_ID }}"
+        run: netlify deploy --prod --dir target/site/apidocs/apidocs --auth ${{secrets.NETLIFY_ACCESS_TOKEN}} --site ${{secrets.NETLIFY_SITE_ID}}
