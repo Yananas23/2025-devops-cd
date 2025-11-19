@@ -60,13 +60,13 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: npm install -g netlify-cli
 
+      - name: Return to workspace root
+        if: github.ref == 'refs/heads/main'
+        run: cd $GITHUB_WORKSPACE
+
       - name: Build Javadoc
         if: github.ref == 'refs/heads/main'
         run: ./mvnw javadoc:javadoc
-
-      - name: Return to workspace root
-        if: github.ref == 'refs/heads/main'
-        run: cd $GITHUB_WORKSPACE && ls -R .
 
       - name: Deploy documentation to Netlify (--prod)
         if: github.ref == 'refs/heads/main'
