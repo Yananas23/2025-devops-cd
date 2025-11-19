@@ -60,6 +60,9 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: npm install -g netlify-cli
 
+      - name: Build Javadoc
+        run: mvn -B package javadoc:javadoc
+
       - name: Deploy documentation to Netlify (--prod)
         if: github.ref == 'refs/heads/main'
         run: |
