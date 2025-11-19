@@ -1,8 +1,7 @@
 # example netlify.toml
 [build]
-  command = "docker build -f cd.dockerfile -t yananas23/spring-app:main ."
-  functions = "netlify/functions"
-  publish = ""
+  command = "./mvn javadoc:javadoc"
+  publish = "target/site/apidocs"
 
   ## Uncomment to use this redirect for Single Page Applications like create-react-app.
   ## Not needed for static site generators.
