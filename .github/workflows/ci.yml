@@ -1,0 +1,40 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: ["*"]
+  pull_request:
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Cache Maven packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Run tests
+        run: ./mvnw -B test
+
+      - name: Build app
+        run: ./mvnw -B clean package
+
+      - name: Docker build
+        run: docker build -t spring-app:test .
+
+      - name: Build documentation
+        run: ./mvnw -B javadoc:javadoc
