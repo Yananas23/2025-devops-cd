@@ -34,7 +34,37 @@ jobs:
         run: ./mvnw -B clean package
 
       - name: Docker build
-        run: docker build -f cd.dockerfile -t yananas23/spring-app:test .
+        run: docker build -f cd.dockerfile -t spring-app .
 
       - name: Build documentation
         run: ./mvnw -B javadoc:javadoc
+
+        # -------------------------
+        # CD — main branch only
+        # -------------------------
+
+      - name: Login to Docker Hub
+        if: github.ref == 'refs/heads/main'
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build & Push Docker image (tag=main)
+        if: github.ref == 'refs/heads/main'
+        run: |
+          docker build -f cd.dockerfile -t ${{ secrets.DOCKERHUB_USERNAME }}/spring-app:main .
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/spring-app:main
+
+      - name: Install Netlify CLI
+        if: github.ref == 'refs/heads/main'
+        run: npm install -g netlify-cli
+
+      - name: Deploy documentation to Netlify (--prod)
+        if: github.ref == 'refs/heads/main'
+        run: |
+          netlify deploy \
+            --dir=target/site/apidocs \
+            --prod \
+            --auth="${{ secrets.NETLIFY_AUTH_TOKEN }}" \
+            --site="${{ secrets.NETLIFY_SITE_ID }}"
