@@ -61,7 +61,7 @@ jobs:
         run: npm install -g netlify-cli
 
       - name: Build Javadoc
-        run: mvn -B package javadoc:javadoc
+        run: ./mvnw javadoc:javadoc
 
       - name: Deploy documentation to Netlify (--prod)
         if: github.ref == 'refs/heads/main'
