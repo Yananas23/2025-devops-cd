@@ -56,6 +56,14 @@ jobs:
           docker build -f cd.dockerfile -t ${{ secrets.DOCKERHUB_USERNAME }}/spring-app:main .
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/spring-app:main
 
+      - name: Deploy on Render.com
+        if: github.ref == 'refs/heads/main'
+        run: |
+          curl -X POST \
+            -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            ${{ secrets.RENDER_DEPLOY_HOOK }}
+
       - name: Install Netlify CLI
         if: github.ref == 'refs/heads/main'
         run: npm install netlify-cli -g
