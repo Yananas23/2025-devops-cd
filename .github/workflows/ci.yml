@@ -74,4 +74,4 @@ jobs:
 
       - name: Deploy documentation to Netlify (--prod)
         if: github.ref == 'refs/heads/main'
-        run: netlify deploy --prod --dir target/reports/apidocs/ --auth ${{secrets.NETLIFY_AUTH_TOKEN}} --site ${{secrets.NETLIFY_SITE_ID}}
+        run: netlify deploy --prod --dir target/site/apidocs/ --auth ${{secrets.NETLIFY_AUTH_TOKEN}} --site ${{secrets.NETLIFY_SITE_ID}}
