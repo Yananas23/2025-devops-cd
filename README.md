@@ -1,4 +1,5 @@
 # Hello!! This is a spring boot app!
+[![CI Pipeline](https://github.com/Yananas23/2025-devops-cd/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Yananas23/2025-devops-cd/actions/workflows/ci.yml)
 
 This app is simple. It connects to a postgres database and says if the database works.
 
